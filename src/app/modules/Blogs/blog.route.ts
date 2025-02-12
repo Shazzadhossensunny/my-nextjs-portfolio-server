@@ -10,6 +10,7 @@ const router = express.Router();
 
 router.post(
   '/',
+
   validateRequest(createBlogValidationSchema),
   BlogControllers.createBlog
 );
@@ -17,6 +18,7 @@ router.post(
 router.get('/:idOrSlug', BlogControllers.getBlogByIdOrSlug);
 router.patch(
   '/:id',
+
   validateRequest(updateBlogValidationSchema),
   BlogControllers.updateBlog
 );

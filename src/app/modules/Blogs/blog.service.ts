@@ -1,9 +1,9 @@
+// blog.service.ts
 import { TBlog } from './blog.interface';
 import { Blog } from './blog.model';
 
-// Function to calculate read time based on content
 const calculateReadTime = (content: string): number => {
-  const wordsPerMinute = 200; // Average reading speed
+  const wordsPerMinute = 200;
   const wordCount = content.split(/\s+/).length;
   return Math.ceil(wordCount / wordsPerMinute);
 };
