@@ -1,4 +1,4 @@
-// blog.service.ts
+import slugify from 'slugify';
 import { TBlog } from './blog.interface';
 import { Blog } from './blog.model';
 
@@ -8,10 +8,34 @@ const calculateReadTime = (content: string): number => {
   return Math.ceil(wordCount / wordsPerMinute);
 };
 
+/**
+ * Generates a unique slug if the same slug already exists in the database.
+ */
+const generateUniqueSlug = async (title: string): Promise<string> => {
+  let slug = slugify(title, { lower: true, strict: true });
+  let existingBlog = await Blog.findOne({ slug });
+
+  // If slug exists, append a number to make it unique
+  let count = 1;
+  while (existingBlog) {
+    slug = `${slug}-${count}`;
+    existingBlog = await Blog.findOne({ slug });
+    count++;
+  }
+
+  return slug;
+};
+
 const createBlogIntoDB = async (payload: TBlog) => {
+  // Generate a unique slug
+  payload.slug = await generateUniqueSlug(payload.title);
+
+  // Calculate read time if content is provided
   if (payload.content) {
     payload.readTime = calculateReadTime(payload.content);
   }
+
+  // Save the blog post
   const result = await Blog.create(payload);
   return result;
 };
