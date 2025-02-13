@@ -21,7 +21,6 @@ export const updateBlogValidationSchema = z.object({
     readTime: z.number().min(1).optional(),
     category: z.string().optional(),
     image: z.string().url().optional(),
-    slug: z.string().min(3).optional(),
     content: z.string().optional(),
   }),
 });
